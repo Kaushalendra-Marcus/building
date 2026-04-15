@@ -1,0 +1,23 @@
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, UUID
+from sqlalchemy.sql import func
+from app.db.database import Base
+import uuid
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    email = Column(String, index=True, unique=True, nullable=True)
+    name = Column(String, nullable=True)
+    hashed_password = Column(String, nullable=True)  # "email" / "google" / "guest"
+    auth_provider = Column(String, nullable=False)
+    google_id = Column(String, unique=True, nullable=True)
+    queries_today = Column(Integer, default=0)
+    last_reset = Column(DateTime(timezone=True), server_default=func.now())
+    is_active = Column(Boolean, default=True)
+    plan = Column(String, default="free")
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )

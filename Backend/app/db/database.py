@@ -21,9 +21,13 @@ Base = declarative_base()
 
 
 async def check_db_connection():
-    async with engine.begin() as conn:
-        await conn.execute(text("SELECT 1"))
-        logger.info("Database Connected")
+    try:
+        async with engine.connect() as conn:
+            await conn.execute(text("SELECT 1"))
+        logger.info("Database connected successfully")
+    except Exception as e:
+        logger.error(f"Database connection failed: {e}")
+        raise
 
 
 async def get_db():
