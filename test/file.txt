@@ -1,0 +1,145 @@
+ai-bi-copilot/
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Auth/
+│   │   │   │   ├── LoginForm.jsx
+│   │   │   │   ├── RegisterForm.jsx
+│   │   │   │   ├── GoogleAuthButton.jsx
+│   │   │   │   └── GuestModeButton.jsx
+│   │   │   │
+│   │   │   ├── Payment/
+│   │   │   │   ├── UpgradeModal.jsx
+│   │   │   │   ├── PaymentForm.jsx      ← UPI + Bank
+│   │   │   │   ├── UPISection.jsx       ← QR + UPI ID
+│   │   │   │   ├── UTRSubmitForm.jsx    ← UTR input
+│   │   │   │   └── PricingCard.jsx
+│   │   │   │
+│   │   │   ├── Chat/
+│   │   │   │   ├── ChatWindow.jsx
+│   │   │   │   ├── ChatBubble.jsx
+│   │   │   │   ├── ChatInput.jsx
+│   │   │   │   └── SuggestedQueries.jsx
+│   │   │   │
+│   │   │   ├── Charts/
+│   │   │   │   ├── LineChart.jsx
+│   │   │   │   ├── BarChart.jsx
+│   │   │   │   ├── PieChart.jsx
+│   │   │   │   ├── KPICard.jsx
+│   │   │   │   └── ChartWrapper.jsx
+│   │   │   │
+│   │   │   ├── Dashboard/
+│   │   │   │   ├── DashboardGrid.jsx
+│   │   │   │   ├── InsightCard.jsx
+│   │   │   │   └── NewsSection.jsx
+│   │   │   │
+│   │   │   ├── Upload/
+│   │   │   │   ├── FileUpload.jsx
+│   │   │   │   ├── FilePreview.jsx
+│   │   │   │   └── DataTable.jsx
+│   │   │   │
+│   │   │   └── Common/
+│   │   │       ├── Navbar.jsx
+│   │   │       ├── Sidebar.jsx
+│   │   │       ├── LimitBanner.jsx
+│   │   │       ├── LoadingSpinner.jsx
+│   │   │       └── ErrorBoundary.jsx
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Landing.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Chat.jsx
+│   │   │   └── Auth.jsx
+│   │   │
+│   │   ├── store/
+│   │   │   ├── authStore.js             ← User + plan + guest
+│   │   │   ├── chatStore.js
+│   │   │   ├── dataStore.js
+│   │   │   └── dashboardStore.js
+│   │   │
+│   │   └── api/
+│   │       ├── axios.js
+│   │       ├── auth.api.js
+│   │       ├── chat.api.js
+│   │       ├── upload.api.js
+│   │       └── payment.api.js
+│   │
+│   ├── .env
+│   └── package.json
+│
+│
+├── backend/
+│   ├── app/
+│   │   ├── main.py
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── auth.py                  ← Email + Google + Guest
+│   │   │   ├── upload.py
+│   │   │   ├── chat.py
+│   │   │   ├── dashboard.py
+│   │   │   ├── news.py
+│   │   │   └── payment.py               ← UTR submit + verify
+│   │   │
+│   │   ├── services/
+│   │   │   │
+│   │   │   ├── auth/
+│   │   │   │   ├── email_auth.py        ← bcrypt + JWT
+│   │   │   │   ├── google_auth.py       ← OAuth verify
+│   │   │   │   ├── guest_auth.py        ← UUID + 24hr token
+│   │   │   │   └── token_service.py     ← Access + Refresh tokens
+│   │   │   │
+│   │   │   ├── payment/
+│   │   │   │   ├── utr_service.py       ← UTR store + verify
+│   │   │   │   ├── plan_service.py      ← Free/paid upgrade
+│   │   │   │   └── notification.py      ← Email on activation
+│   │   │   │
+│   │   │   ├── llm/
+│   │   │   │   ├── groq_service.py
+│   │   │   │   ├── intent_detector.py
+│   │   │   │   ├── sql_generator.py
+│   │   │   │   └── hallucination_guard.py
+│   │   │   │
+│   │   │   ├── embedding/
+│   │   │   │   ├── minilm_service.py
+│   │   │   │   └── pinecone_service.py
+│   │   │   │
+│   │   │   ├── data/
+│   │   │   │   ├── csv_processor.py
+│   │   │   │   ├── pdf_processor.py
+│   │   │   │   ├── validator.py
+│   │   │   │   └── chunker.py
+│   │   │   │
+│   │   │   ├── news/
+│   │   │   │   ├── rss_fetcher.py
+│   │   │   │   ├── news_embedder.py
+│   │   │   │   └── news_cache.py
+│   │   │   │
+│   │   │   └── chart/
+│   │   │       ├── chart_selector.py
+│   │   │       └── insight_generator.py
+│   │   │
+│   │   ├── middleware/
+│   │   │   ├── auth_middleware.py       ← JWT verify
+│   │   │   ├── rate_limiter.py          ← Free: 4/day, Guest: 2
+│   │   │   ├── file_validator.py        ← 5MB free, 2MB guest
+│   │   │   ├── plan_checker.py          ← Feature access control
+│   │   │   └── sql_sanitizer.py
+│   │   │
+│   │   ├── models/
+│   │   │   ├── user.py
+│   │   │   ├── query_log.py
+│   │   │   ├── file_upload.py
+│   │   │   └── payment.py
+│   │   │
+│   │   └── utils/
+│   │       ├── encryption.py
+│   │       ├── error_handler.py
+│   │       └── logger.py
+│   │
+│   ├── .env
+│   ├── requirements.txt
+│   └── Dockerfile
+│
+├── docker-compose.yml
+└── README.md
