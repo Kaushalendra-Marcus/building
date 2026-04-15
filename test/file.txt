@@ -126,11 +126,13 @@ ai-bi-copilot/
 │   │   │   ├── plan_checker.py          ← Feature access control
 │   │   │   └── sql_sanitizer.py
 │   │   │
-│   │   ├── models/
-│   │   │   ├── user.py
-│   │   │   ├── query_log.py
-│   │   │   ├── file_upload.py
-│   │   │   └── payment.py
+│   │   ├── db/
+|   |   |   |__database.py
+|   |   |   |_____models/
+│   │   │       ├── user.py
+│   │   │       ├── query_log.py
+│   │   │       ├── file_upload.py
+│   │   │       └── payment.py
 │   │   │
 │   │   └── utils/
 │   │       ├── encryption.py
