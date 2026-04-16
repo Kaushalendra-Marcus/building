@@ -1,7 +1,7 @@
 from sqlalchemy import (
     Column,
     DateTime,
-    Integer,
+    Numeric,
     String,
     UUID,
     ForeignKey,
@@ -17,7 +17,7 @@ class Payment(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     utr = Column(String(100), unique=True, nullable=False)
-    amount = Column(Integer(50), nullable=False)
+    amount = Column(Numeric(10, 2), nullable=False)
     status = Column(
         Enum("pending", "verified", "rejected", name="payment_status_enum"),
         default="pending",
