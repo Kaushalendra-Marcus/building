@@ -74,6 +74,11 @@ ai-bi-copilot/
 │   │   ├── main.py
 |   |   |
 │   │   │__schemas/
+│   │   │   ├── user.py                  ← Email + Google + Guest
+│   │   │   ├── payment.py
+│   │   │   ├── query_log.py
+│   │   │   ├── file_upload.py
+|   |   |   |__ auth.py
 |   |   |
 │   │   ├── routes/
 │   │   │   ├── auth.py                  ← Email + Google + Guest
