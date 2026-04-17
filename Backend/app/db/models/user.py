@@ -18,9 +18,11 @@ class User(Base):
     last_reset = Column(DateTime(timezone=True), server_default=func.now())
     is_active = Column(Boolean, default=True)
     plan = Column(String, default="free")
+    device_fingerprint = Column(String(255), unique=True, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
     queries = relationship("QueryLogs", back_populates="user")
     file_upload = relationship("FileUpload", back_populates="user")
+    payments = relationship("Payment", back_populates="user")
