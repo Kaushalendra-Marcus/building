@@ -8,3 +8,5 @@ asyncpg
 alembic
 psycopg2-binary
 datetime
+passlib
+python-jose[cryptography]
