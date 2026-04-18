@@ -10,3 +10,4 @@ psycopg2-binary
 datetime
 passlib
 python-jose[cryptography]
+google-auth
