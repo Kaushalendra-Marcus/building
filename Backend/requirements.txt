@@ -11,3 +11,4 @@ datetime
 passlib
 python-jose[cryptography]
 google-auth
+aiosmtplib

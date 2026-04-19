@@ -5,6 +5,8 @@ from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta, timezone
 from app.config import get_settings
+from app.services.auth.email_verification import create_verification_token
+from app.services.auth.email_sender import send_verification_email
 
 settings = get_settings()
 pwd_manager = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -53,7 +55,8 @@ async def register_user(db: AsyncSession, email, password, name):
     db.add(user)
     await db.commit()
     await db.refresh(user)
-
+    token = create_verification_token(user.id)
+    await send_verification_email(user.email, token)
     return {
         "user": user,
         "access_token": create_access_token(user.id),
@@ -65,8 +68,8 @@ async def login_user(db: AsyncSession, email, password):
     result = await db.execute(select(User).where(User.email == email))
     user = result.scalar_one_or_none()
 
-    if not user or not verify_password(password, user.hashed_password):
-        raise ValueError("Invalid Email or Password")
+    if not user.is_email_verified:
+        raise ValueError("Please verify your email first")
 
     if not user.is_active:
         raise ValueError("Account is disabled")

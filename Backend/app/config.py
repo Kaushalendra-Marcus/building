@@ -21,6 +21,12 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    FRONTEND_URL: str = Field(..., env="FRONTEND_URL")
+    SMTP_HOST: str = Field(..., env="SMTP_HOST")
+    SMTP_PORT: int = Field(..., env="SMTP_PORT")
+    SMTP_USER: str = Field(..., env="SMTP_USER")
+    SMTP_PASS: str = Field(..., env="SMTP_PASS")
+    EMAIL_FROM: str = Field(..., env="EMAIL_FROM")
 
     GOOGLE_CLIENT_ID: str = Field(..., env="GOOGLE_CLIENT_ID")
     GOOGLE_CLIENT_SECRET: str = Field(..., env="GOOGLE_CLIENT_SECRET")

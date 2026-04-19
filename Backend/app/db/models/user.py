@@ -19,6 +19,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     plan = Column(String, default="free")
     device_fingerprint = Column(String(255), unique=True, nullable=True)
+    is_verified = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
