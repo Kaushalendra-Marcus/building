@@ -36,6 +36,11 @@ class Settings(BaseSettings):
     UPI_ID: str = Field(..., env="UPI_ID")
     PAYMENT_AMOUNT: int = 299
 
+    LOGIN_RATE_LIMIT: int = 5
+    VERIFY_EMAIL_RATE_LIMIT: int = 3
+
+    REQUESTS_PER_MINUTE: int = 60
+
     class Config:
         env_file = ".env"
         case_sensitive = True
