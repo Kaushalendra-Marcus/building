@@ -19,9 +19,12 @@ class Settings(BaseSettings):
 
     JWT_SECRET: str = Field(..., env="JWT_SECRET")
     JWT_ALGORITHM: str = "HS256"
+
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+
     FRONTEND_URL: str = Field(..., env="FRONTEND_URL")
+    
     SMTP_HOST: str = Field(..., env="SMTP_HOST")
     SMTP_PORT: int = Field(..., env="SMTP_PORT")
     SMTP_USER: str = Field(..., env="SMTP_USER")
