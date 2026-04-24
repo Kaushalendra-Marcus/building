@@ -15,11 +15,14 @@ async def rate_limiter(
     now = datetime.now(timezone.utc)
     if user.last_reset.date() != now.date():
         user.queries_today = 0
+        last_reset = user.last_reset
+        if last_reset.tzinfo is None:
+            last_reset = last_reset.replace(tzinfo=timezone.utc)
         user.last_reset = now
         await db.commit()
 
     if user.auth_provider == "guest":
-        limits = LIMITS["guest"]
+        limit = LIMITS["guest"]
     else:
         limit = LIMITS.get(user.plan, LIMITS["free"])
 
