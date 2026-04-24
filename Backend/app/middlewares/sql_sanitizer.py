@@ -1,5 +1,8 @@
 import re
+import logging
 from fastapi import HTTPException, status
+
+logger = logging.getLogger(__name__)
 
 FORBIDDEN_KEYWORDS = [
     "DROP",
@@ -13,45 +16,54 @@ FORBIDDEN_KEYWORDS = [
 ]
 
 ALLOWED_START = ["SELECT", "WITH"]
-
 MAX_QUERY_LENGTH = 1000
+
+
+def remove_strings(q: str):
+    return re.sub(r"'[^']*'", "", q)
 
 
 def sanitize_sql(query: str) -> str:
     if not query:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Empty query",
-        )
+        raise HTTPException(status_code=400, detail="Empty query")
 
     if len(query) > MAX_QUERY_LENGTH:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Query too long"
-        )
+        raise HTTPException(status_code=400, detail="Query too long")
+
     cleaned_query = query.strip().upper()
 
-    if ";" in cleaned_query:
+    scan_query = remove_strings(cleaned_query)
+
+    if ";" in scan_query[:-1]:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
+            status_code=403,
             detail="Multiple statements not allowed",
         )
 
-    if "--" in cleaned_query or "/*" in cleaned_query:
+    if "--" in scan_query or "/*" in scan_query:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="SQL comments not allowed"
+            status_code=403,
+            detail="SQL comments not allowed",
         )
 
     for keyword in FORBIDDEN_KEYWORDS:
-        if re.search(rf"\b{keyword}\b", cleaned_query):
+        if re.search(rf"(?<!\w){keyword}(?!\w)", scan_query):
+            logger.warning(f"Blocked dangerous query: {query}")
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
+                status_code=403,
                 detail=f"Forbidden SQL operation: {keyword}",
             )
 
-    if not any(cleaned_query.startswith(k) for k in ALLOWED_START):
+    if not any(scan_query.startswith(k) for k in ALLOWED_START):
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
+            status_code=403,
             detail="Only SELECT queries are allowed",
+        )
+
+    if "LIMIT" not in scan_query:
+        raise HTTPException(
+            status_code=403,
+            detail="Query must include LIMIT",
         )
 
     return query
