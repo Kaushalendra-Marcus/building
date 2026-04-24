@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     DATABASE_URL: str = Field(..., env="DATABASE_URL")
 
     GROQ_API_KEY: str = Field(..., env="GROQ_API_KEY")
+    GROQ_MODEL: str = "llama-3.1-70b-versatile"
+
+    HF_API_KEY: str = Field(..., env="HF_API_KEY")
+    HF_MODEL: str = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
     PINECONE_API_KEY: str = Field(..., env="PINECONE_API_KEY")
     PINECONE_ENVIRONMENT: str = Field(..., env="PINECONE_ENVIRONMENT")
@@ -24,7 +28,7 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     FRONTEND_URL: str = Field(..., env="FRONTEND_URL")
-    
+
     SMTP_HOST: str = Field(..., env="SMTP_HOST")
     SMTP_PORT: int = Field(..., env="SMTP_PORT")
     SMTP_USER: str = Field(..., env="SMTP_USER")
