@@ -2,11 +2,23 @@ from fastapi import Depends, HTTPException, UploadFile, status
 from app.db.models.user import User
 
 from app.middlewares.auth_middleware import get_current_user
+import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 LIMITS = {
-    "free": 1 * 1024 * 1024,
-    "pro": 5 * 1024 * 1024,
+    "free": 3 * 1024 * 1024,
+    "pro": 10 * 1024 * 1024,
 }
+
+ALLOWED_TYPES = [
+    "text/csv",
+    "application/pdf",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+]
+
+ALLOWED_EXT = [".csv", ".pdf", ".xlsx"]
 
 
 async def validate_file_upload(
@@ -25,6 +37,19 @@ async def validate_file_upload(
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Invalid plan",
+        )
+
+    ext = os.path.splitext(file.filename)[1].lower()
+    if ext not in ALLOWED_EXT:
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail="Invalid file type",
+        )
+
+    if file.content_type not in ALLOWED_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail="Only CSV, PDF and Excel files allowed",
         )
 
     contents = await file.read()
