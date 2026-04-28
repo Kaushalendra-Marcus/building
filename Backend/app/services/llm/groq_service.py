@@ -15,7 +15,7 @@ HF_HEADERS = {"Authorization": f"Bearer {settings.HF_API_KEY}"}
 
 
 async def hf_fallback(prompt: str, system_prompt: str) -> dict:
-    logger.warning("Groq failed — switching to HuggingFace fallback")
+    logger.warning("Groq failed - switching to HuggingFace fallback")
     full_prompt = f"{system_prompt}\n\nUser: {prompt}\nAssistant:"
     try:
         async with httpx.AsyncClient(timeout=30) as http:
